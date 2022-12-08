@@ -12,6 +12,7 @@
 
 		<!-- Theme used for syntax highlighted code -->
 		<link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+		<link rel="stylesheet" href="css/font-awesome-4.7.0/font-awesome-4.7.0/css/font-awesome.css">
 
 		<style>
 			.reveal h1 {
@@ -24,10 +25,13 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section data-markdown>
+				<section data-markdown data-separator-notes = "^note:">
 					<script type="text/template">
 					Углы поворота
 					=============
+
+
+					Note: 0___o
 					</script>
 				</section>
 
@@ -181,6 +185,10 @@
 						![rollyawpitch](img/rollyawpitch.png)
 						
 					</script>
+					
+					<aside class ="notes">
+						hehehe
+						</aside>
 				</section>
 
 				<section>
@@ -254,7 +262,6 @@
 						Угол атаки (обозначается, как угол $\alpha$) - угол между направлением вектора скорости набегающего на тело потока (жидкости или газа) и характерным продольным направлением, выбранным на теле.
 						Например, у самолета - это хорда крыла.
 
-						
 					</script>
 				</section>
 
@@ -265,12 +272,9 @@
 
 						![угол атаки](img/atack.jpg)
 
-						
 					</script>
 				</section>
 			</section>
-
-				
 
 				<section>
 
@@ -279,23 +283,12 @@
 					muted="muted" src="http://isp.9pr.ru/assetsrevealjs/mit/video/video.mp4"></video>
 				</section>
 
-				
-
-				
-
 			</section>
 
 				<section>
 					<h3>Манипулятор самолёта</h3>
 						
 				</section>
-
-
-				<section>
-					<h3>Морской бой</h3>
-						
-				</section>
-
 
 				<section data-background-image="img/cats.jpg" 
 					data-background-size="contain" 
@@ -308,20 +301,21 @@
 					 <p> Спасибо за внимание</p>
 				</section>
 
-
 				<section data-menu-title="триптих"> </section>
-					
+				
 			</section>
-			   <div> </div>
-		
+			
+			</div>
+			<div>
+				<div id = "plane"></div>
+				<div style = "position: fixed; z-index:30; font-size: 22px; left: 60px; bottom:32px;">
+				<a href="#" id="noteswitch" title = "Включение/ отключение заметок к слайду">
+					<i class = "fa fa-sticky-note"></i>
 
-
-
+				</a>
+				</div>
 			</div>
 		</div>
-
-
-		
 
 
 
@@ -331,7 +325,28 @@
 		<script src="plugin/highlight/highlight.js"></script>
 		<script src="plugin/math/math.js"></script>
 		<script src="plugin/zoom/zoom.js"></script>
+		
+		<script src ="js/three.js"></script>
+		<script src ="js/examples/js/loaders/GLTFLoader.js"></script>
+		<script src ="js/examples/js/controls/OrbitControls.js"></script>
+		<script src ="js/examples/js/objects/Sky.js"></script>
+		<script src ="http://plane.9pr.ru/socket.io/socket.io.js"></script>
+		<script src ="js/main.js"></script>
+		
 		<script>
+
+			window.onload = () => {
+				let showNotes = () => {
+					Reveal.configure({
+						showNotes: (
+							Reveal.getConfig().showNotes ? false : true
+						)
+					});
+					return false;
+				}
+				document.querySelector('#noteswitch').onclick = showNotes;
+			}
+			
 			// More info about initialization & config:
 			// - https://revealjs.com/initialization/
 			// - https://revealjs.com/config/

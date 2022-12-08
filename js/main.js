@@ -15,13 +15,12 @@ function init () {
         }
     );
         renderer.setSize(window.innerWidth,window.innerHeight);
-        document.body.appendChild(renderer.domElement);
+        document.querySelector('#plane').appendChild(renderer.domElement);
         camera = new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight,1,10000);
         camera.position.set(-5,7,-5);
         camera.lookAt(0,0,0);
         scene.add(camera);
-
-        const controls = new THREE.OrbitControls(camera,renderer.donElement);
+        const controls = new THREE.OrbitControls(camera,renderer.domElement);
         controls.update();
         const helper = new THREE.GridHelper(40, 10);
         scene.add(helper);
@@ -35,7 +34,7 @@ function init () {
         const loader = new THREE.GLTFLoader();
         loader.load('../models/a380.glb', function (gltf) {
             plane = gltf.scene;
-            plane.scale.set(.2,.2,.2);
+            plane.scale.set(0.02,0.02,0.02);
         });
 
         sky = new THREE.Sky();
@@ -60,26 +59,27 @@ function init () {
     }
 
 
-function render () {
-    if (isLoaded == false && !!plane) {
-        isLoaded = true;
-        scene.add(plane);
+    function render () {
+        if (isLoaded == false && !!plane) {
+            isLoaded = true;
+            scene.add(plane);
+        }
+        renderer.render(scene,camera);
+        requestAnimationFrame(render);
     }
-    renderer.render(scene,camera);
-    requestAnimationFrame(render);
-}
 
-function rotatePlane(body) {
-    plane.rotation.x = THREE.MathUtils.degToRad(body.beta);
-    plane.rotation.y = THREE.MathUtils.degToRad(body.alpha);
-    plane.rotation.z = THREE.MathUtils.degToRad(body.gamma);
-}
+    function rotatePlane(body) {
+        plane.rotation.x = THREE.MathUtils.degToRad(body.beta);
+        plane.rotation.y = THREE.MathUtils.degToRad(body.alpha);
+        plane.rotation.z = THREE.MathUtils.degToRad(body.gamma);
+    }
 
-if ('DeviceOrientationEvent' in window) {
-    window.addEventListener('deviceorientation', rotatePlane, false);
-} else {
-    console.log('Данная технология не поддерживается.');
-}
+    socket = io('https://plane.9pr.ru/'+ user);
+    socket.on('connect', () => {
+        socket.on('getPosition',rotatePlane);
+    });
+
+
 
 
 init();

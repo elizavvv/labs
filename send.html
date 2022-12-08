@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        альфа <span id = "alpha"> </span>
+    </div>
+    <div>
+        бета <span id = "beta"> </span>
+    </div>
+    <div>
+        гамма <span id = "gamma"> </span>
+    </div>
+    <div>
+         <span id = "error"> </span>
+    </div>
+    <script src = "https://plane.9pr.ru/socket.io/socket.io.js"></script>
+    <script>
+        let user ='liza';
+        let socket = io('https://plane.9pr.ru/'+user);
+        socket.on('connect', () => {
+        if ('DeviceOrientationEvent' in window) {
+        window.addEventListener('deviceorientation', rotatePlane, false);
+        } else {
+            document.querySelector('#error').innerHTML = 'Данная технология не поддерживается';
+        }
+        function rotatePlane(body) {
+            alpha = body.alpha;
+            beta = body.beta;
+            gamma = body.gamma;
+
+            document.querySelector('#alpha').innerHTML = alpha;
+            document.querySelector('#beta').innerHTML = beta;
+            document.querySelector('#gamma').innerHTML = gamma;
+
+            socket.timeout(200).emit('sendPosition', {
+                alpha, beta, gamma
+            });
+        }
+    });
+    </script> 
+</body>
+</html>
